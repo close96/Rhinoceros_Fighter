@@ -7,10 +7,10 @@ public class Player : MonoBehaviour {
 	
 	private void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow)) { this.transform.position += Vector3.forward * 2.0f; }
-        if (Input.GetKeyDown(KeyCode.DownArrow)) { this.transform.position += Vector3.back * 2.0f; }
-        if (Input.GetKeyDown(KeyCode.RightArrow)) { this.transform.position += Vector3.right * 2.0f; }
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) { this.transform.position += Vector3.left * 2.0f; }
+        if (Input.GetKeyDown(KeyCode.UpArrow)) { this.transform.position += Vector3.forward * 1.0f; }
+        if (Input.GetKeyDown(KeyCode.DownArrow)) { this.transform.position += Vector3.back * 1.0f; }
+        if (Input.GetKeyDown(KeyCode.RightArrow)) { this.transform.position += Vector3.right * 1.0f; }
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) { this.transform.position += Vector3.left * 1.0f; }
         if (Input.GetKeyDown(KeyCode.Space)) { digestionCount++; }
 	}
 

@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FireAppear : MonoBehaviour {
-    [SerializeField]
-    private GameObject fireAppear;
-    [SerializeField]
-    private GameObject[] fire;
     private float firingInterval = 3.0f;
-    private int beforeNum = 0;
-    private int appearNum = 0;
+    private int appearNumX = 0;
+    private int appearNumZ = 0;
+    [SerializeField]
+    private GameObject fire;
+    private GameObject[,] fires = new GameObject[5, 5];
 
 	private void Start () 
     {
-        foreach (Transform item in fireAppear.transform)
+        for (int i = 0; i < 5; i++)
         {
-            item.gameObject.SetActive(false);
+            for (int j = 0; j < 5; j++)
+            {
+                Vector3 createPoint = new Vector3(-3.5f + j, 1.5f, 0.5f - i);
+                GameObject f = Instantiate(fire, createPoint, Quaternion.identity);
+                fires[i, j] = f;
+                fires[i, j].SetActive(false);
+            }
         }
         StartCoroutine( Firing() );
 	}
@@ -24,12 +29,9 @@ public class FireAppear : MonoBehaviour {
     {
         while(true)
         {
-            while (appearNum == beforeNum)
-            {
-                appearNum = Random.Range(0, 9);
-            }
-            fire[appearNum].SetActive(true);
-            beforeNum = appearNum;
+            appearNumX = Random.Range(0, 5);
+            appearNumZ = Random.Range(0, 5);
+            fires[appearNumX, appearNumZ].SetActive(true);
             yield return new WaitForSeconds(firingInterval);
         }
     }

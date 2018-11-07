@@ -32,7 +32,8 @@ public class Player : MonoBehaviour {
 
     private void Move()
     {
-        Vector3 targetPos;
+        //Vector3 targetPos;
+        //float distance = (this.transform.position)
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour {
         this.transform.position = new Vector3(Mathf.Clamp(pos.x, stageLeftLine, stageRightLine), pos.y, Mathf.Clamp(pos.z, stageBottomLine, stageTopLine));
     }
 
-    private bool CanMoveCheck(Vector3 _nowPos, Vector3 _direction)
+    /*private bool CanMoveCheck(Vector3 _nowPos, Vector3 _direction)
     {
         Debug.Log(_direction);
         RaycastHit hit;
@@ -77,5 +78,5 @@ public class Player : MonoBehaviour {
         {
             return true;
         }
-    }
+    }*/
 }

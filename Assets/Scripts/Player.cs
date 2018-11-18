@@ -1,15 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityScript.Scripting.Pipeline;
 
 public class Player : MonoBehaviour {
     private int digestionCount = 0;
     private Vector3 pos;
+    private Vector3 targetPos;
     private static float stageLeftLine = -3.5f;
     private static float stageRightLine = 0.5f;
     private static float stageTopLine = 0.5f;
     private static float stageBottomLine = -3.5f;
-	
+
+    private void Start()
+    {
+        targetPos = this.transform.position;
+    }
+    
 	private void Update ()
     {
         Move();
@@ -32,51 +39,42 @@ public class Player : MonoBehaviour {
 
     private void Move()
     {
-        //Vector3 targetPos;
-        //float distance = (this.transform.position)
-
+        float distance = 1.0f;
+        
+        // 上に移動
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            this.transform.position += Vector3.forward * 1.0f;
-            //targetPos = this.transform.position + Vector3.forward * 1.0f;
-            //if (!CanMoveCheck(this.transform.position, targetPos - this.transform.position)) return;
-
-            //this.transform.position = targetPos;
+            targetPos.z = this.transform.position.z + distance;
         }
+        
+        // 右に移動
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             this.transform.rotation = Quaternion.Euler(0, 90.0f, 0);
-            this.transform.position += Vector3.right * 1.0f;
+            targetPos.x = this.transform.position.x + distance;
         }
+        
+        // 下に移動
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             this.transform.rotation = Quaternion.Euler(0, 180.0f, 0);
-            this.transform.position += Vector3.back * 1.0f;
+            targetPos.z = this.transform.position.z - distance;
         }
+        
+        // 左に移動
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             this.transform.rotation = Quaternion.Euler(0, 270.0f, 0);
-            this.transform.position += Vector3.left * 1.0f;
+            targetPos.x = this.transform.position.x - distance;
         }
 
+        this.transform.position = Vector3.Lerp(this.transform.position, targetPos, Time.deltaTime * 5);
+        
+        // エリア設定
         pos = this.transform.position;
 
         this.transform.position = new Vector3(Mathf.Clamp(pos.x, stageLeftLine, stageRightLine), pos.y, Mathf.Clamp(pos.z, stageBottomLine, stageTopLine));
     }
 
-    /*private bool CanMoveCheck(Vector3 _nowPos, Vector3 _direction)
-    {
-        Debug.Log(_direction);
-        RaycastHit hit;
-        Physics.Raycast(_nowPos, _direction, out hit, 1);
-        if (hit.collider.gameObject.tag == "wood")
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }*/
 }

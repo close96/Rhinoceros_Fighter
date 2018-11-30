@@ -5,16 +5,26 @@ using UnityScript.Scripting.Pipeline;
 
 public class Player : MonoBehaviour {
     private int digestionCount = 0;
-    private Vector3 pos;
     private Vector3 targetPos;
     private static float stageLeftLine = -3.5f;
     private static float stageRightLine = 0.5f;
     private static float stageTopLine = 0.5f;
     private static float stageBottomLine = -3.5f;
+    private float distance = 1.0f;
+    private Vector3[,] playArea = new Vector3[5, 5];
+    private Dictionary<Vector3, string> canMoveArea = new Dictionary<Vector3, string>();
 
     private void Start()
     {
         targetPos = this.transform.position;
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                playArea[i, j] = new Vector3(stageLeftLine + (j * distance), 1.4f, stageTopLine - (i * distance));
+                canMoveArea.Add(playArea[i, j], "true");
+            }
+        }
     }
     
 	private void Update ()
@@ -39,42 +49,62 @@ public class Player : MonoBehaviour {
 
     private void Move()
     {
-        float distance = 1.0f;
-        
-        // 上に移動
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        Vector3 moveCheckPos = this.transform.position;
+            
+        if (this.transform.position == targetPos)
         {
-            this.transform.rotation = Quaternion.Euler(0, 0, 0);
-            targetPos.z = this.transform.position.z + distance;
-        }
+            // 上に移動
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                moveCheckPos.z = moveCheckPos.z + distance;
+                this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                
+                if (moveCheckPos.z <= stageTopLine && canMoveArea[moveCheckPos] == "true")
+                {
+                    targetPos.z = moveCheckPos.z;
+                }
+            }
         
-        // 右に移動
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            this.transform.rotation = Quaternion.Euler(0, 90.0f, 0);
-            targetPos.x = this.transform.position.x + distance;
-        }
+            // 右に移動
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                moveCheckPos.x = moveCheckPos.x + distance;
+                this.transform.rotation = Quaternion.Euler(0, 90.0f, 0);
+                
+                if (moveCheckPos.x <= stageRightLine && canMoveArea[moveCheckPos] == "true")
+                {
+                    targetPos.x = moveCheckPos.x;
+                }
+            }
         
-        // 下に移動
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            this.transform.rotation = Quaternion.Euler(0, 180.0f, 0);
-            targetPos.z = this.transform.position.z - distance;
-        }
+            // 下に移動
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                moveCheckPos.z = moveCheckPos.z - distance;
+                this.transform.rotation = Quaternion.Euler(0, 180.0f, 0);
+                
+                if (stageBottomLine <= moveCheckPos.z && canMoveArea[moveCheckPos] == "true")
+                {
+                    targetPos.z = moveCheckPos.z;
+                }
+            }
         
-        // 左に移動
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            this.transform.rotation = Quaternion.Euler(0, 270.0f, 0);
-            targetPos.x = this.transform.position.x - distance;
+            // 左に移動
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                moveCheckPos.x = moveCheckPos.x - distance;
+                this.transform.rotation = Quaternion.Euler(0, 270.0f, 0);
+                
+                if (stageLeftLine <= moveCheckPos.x && canMoveArea[moveCheckPos] == "true")
+                {
+                    targetPos.x = moveCheckPos.x;
+                }
+            }
+            
         }
 
-        this.transform.position = Vector3.Lerp(this.transform.position, targetPos, Time.deltaTime * 5);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPos, Time.deltaTime * 7.5f);
         
-        // エリア設定
-        pos = this.transform.position;
-
-        this.transform.position = new Vector3(Mathf.Clamp(pos.x, stageLeftLine, stageRightLine), pos.y, Mathf.Clamp(pos.z, stageBottomLine, stageTopLine));
     }
 
 }

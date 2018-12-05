@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireAppear : MonoBehaviour {
+public class FireAppear : MonoBehaviour
+{
     private float firingInterval = 3.0f;
     private int appearNumX = 0;
     private int appearNumZ = 0;

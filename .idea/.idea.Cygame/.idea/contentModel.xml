@@ -18,9 +18,15 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
-          <e p="FireAppear.cs" t="Include" />
+          <e p="AudioManager.cs" t="Include" />
+          <e p="BackGroundMusicEnum.cs" t="Include" />
+          <e p="BGMTrigger.cs" t="Include" />
+          <e p="EnumHelperExtend.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
+          <e p="Inputs.cs" t="Include" />
           <e p="Player.cs" t="Include" />
+          <e p="SingletonMonoBehaviour.cs" t="Include" />
+          <e p="SoundEffectEnum.cs" t="Include" />
         </e>
         <e p="Tile3D" t="Include">
           <e p="Editor" t="Include">

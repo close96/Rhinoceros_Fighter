@@ -1,0 +1,4 @@
+public enum BackGroundMusicEnum
+{
+	GameBGM,
+}
